@@ -1,15 +1,15 @@
-package com.example.marvelmovieapp.ui.library
+package com.example.marvelmovieapp.ui.browse
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.marvelmovieapp.databinding.FragmentMyLibraryBinding
+import androidx.fragment.app.Fragment
+import com.example.marvelmovieapp.databinding.FragmentBrowseBinding
 
-class MyLibrary : Fragment() {
+class BrowseFragment : Fragment() {
 
-    private var _binding: FragmentMyLibraryBinding? = null
+    private var _binding: FragmentBrowseBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -20,8 +20,9 @@ class MyLibrary : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentMyLibraryBinding.inflate(inflater, container, false)
+        _binding = FragmentBrowseBinding.inflate(inflater, container, false)
         val view = binding.root
         return view
     }
+
 }

@@ -1,57 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.home.HomeDetail">
-
-    <TextView
-        android:id="@+id/titleTextView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="EVENT OR SLIDER TITLE"
-        android:textColor="#262432"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        android:textAlignment="center"
-        android:padding="5dp"
-        android:layout_margin="20dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+    android:background="#262432"
+    tools:context=".ui.home.detail.HomeDetailFragment">
 
     <ImageView
         android:id="@+id/detailImageView"
         android:layout_width="match_parent"
         android:layout_height="300dp"
-        android:layout_margin="20dp"
-        tools:srcCompat="@tools:sample/backgrounds/scenic"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_margin="16dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/titleTextView"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
-    <TextView
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Description"
-        android:textStyle="italic"
-        android:textSize="16sp"
-        android:padding="5dp"
-        android:textColor="#262432"
-        android:layout_margin="20dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:padding="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/detailImageView"/>
+        app:layout_constraintTop_toBottomOf="@id/detailImageView">
 
-    <ImageButton
-        android:id="@+id/favButton"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_margin="30dp"
-        android:src="@drawable/fav_icon"
-        android:background="@color/white"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        <TextView
+            android:id="@+id/descriptionTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="inherit"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="italic"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:text="@tools:sample/lorem/random" />
+
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -6,7 +6,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.marvelmovieapp.R
 import com.example.marvelmovieapp.databinding.RecyclerRowBinding
 import com.example.marvelmovieapp.models.MyEvents
-import com.example.marvelmovieapp.models.SliderModel
 import com.squareup.picasso.Picasso
 
 class EventsRecyclerViewAdapter()
@@ -39,6 +38,9 @@ class EventsRecyclerViewAdapter()
     }
 
     override fun onBindViewHolder(holder: EventsViewHolder, position: Int) {
+        holder.itemView.setOnClickListener {
+            onItemClicked(holder.bindingAdapterPosition)
+        }
         val imageUrl = eventsList[position].imageUrl
         Picasso.get()
             .load(imageUrl)
