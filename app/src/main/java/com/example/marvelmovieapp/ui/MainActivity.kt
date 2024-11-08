@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import com.example.marvelmovieapp.R
 import com.example.marvelmovieapp.databinding.ActivityMainBinding
@@ -26,26 +27,32 @@ class MainActivity : AppCompatActivity() {
         createBottomNavigation()
     }
 
+    override fun onSupportNavigateUp(): Boolean {
+        val nc =
+            (supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment).navController
+        return nc.navigateUp() || super.onSupportNavigateUp()
+    }
+
     private fun createBottomNavigation() {
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
+
         NavigationUI.setupWithNavController(
             binding.bottomNavigationView,
             navHostFragment.navController
         )
+        val configuration = AppBarConfiguration(
+            setOf(
+                R.id.homeFragment,
+                R.id.browseFragment,
+                R.id.myLibraryFragment
+            )
+        )
 
-        navHostFragment.navController.addOnDestinationChangedListener { _, destination, _ ->
-            when (destination.id) {
-                R.id.homeFragment, R.id.browseFragment, R.id.myLibraryFragment -> {
-                    supportActionBar?.title = destination.label
-                    supportActionBar?.setDisplayHomeAsUpEnabled(false)
-                }
-
-                else -> {
-                    supportActionBar?.setDisplayHomeAsUpEnabled(true)
-                    supportActionBar?.setHomeAsUpIndicator(R.drawable.back_botton)
-                }
-            }
-        }
+        NavigationUI.setupActionBarWithNavController(
+            this,
+            navHostFragment.navController,
+            configuration
+        )
     }
 }

@@ -63,10 +63,6 @@ class HomeDetailFragment : Fragment() {
                         ).show()
                         true
                     }
-                    android.R.id.home -> { //Action Bar veya Toolbar’daki geri butonunun  itemId’sini temsil eder.
-                        parentFragmentManager.popBackStack()
-                        true
-                    }
                     else -> false
                 }
             }
