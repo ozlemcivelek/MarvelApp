@@ -11,7 +11,6 @@ import android.widget.Toast
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.navArgs
 import com.example.marvelmovieapp.R
@@ -64,7 +63,10 @@ class HomeDetailFragment : Fragment() {
                         ).show()
                         true
                     }
-
+                    android.R.id.home -> { //Action Bar veya Toolbar’daki geri butonunun  itemId’sini temsil eder.
+                        parentFragmentManager.popBackStack()
+                        true
+                    }
                     else -> false
                 }
             }

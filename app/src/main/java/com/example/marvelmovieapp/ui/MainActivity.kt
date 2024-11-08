@@ -38,9 +38,13 @@ class MainActivity : AppCompatActivity() {
             when (destination.id) {
                 R.id.homeFragment, R.id.browseFragment, R.id.myLibraryFragment -> {
                     supportActionBar?.title = destination.label
+                    supportActionBar?.setDisplayHomeAsUpEnabled(false)
                 }
 
-                else -> {}
+                else -> {
+                    supportActionBar?.setDisplayHomeAsUpEnabled(true)
+                    supportActionBar?.setHomeAsUpIndicator(R.drawable.back_botton)
+                }
             }
         }
     }
