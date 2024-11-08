@@ -1,20 +1,23 @@
 package com.example.marvelmovieapp.network.retrofit
 
 import com.example.marvelmovieapp.network.service.MovieService
-import retrofit2.converter.gson.GsonConverterFactory
+import okhttp3.OkHttpClient
 import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 object Retrofit {
 
     private val movieURL = "https://gateway.marvel.com/v1/public/"
 
-    fun getMovieService() : MovieService {
-        val retrofitBuilder = Retrofit.Builder()
+    fun getMovieService(): MovieService {
+
+        val client = OkHttpClient.Builder()
+            .build()
+        return Retrofit.Builder()
             .baseUrl(movieURL)
+            .client(client)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
-
-        return retrofitBuilder.create(MovieService::class.java)
+            .create(MovieService::class.java)
     }
-
 }
