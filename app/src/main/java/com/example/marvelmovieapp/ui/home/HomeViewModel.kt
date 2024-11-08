@@ -1,10 +1,8 @@
 package com.example.marvelmovieapp.ui.home
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.example.marvelmovieapp.base.BaseViewModel
-import com.example.marvelmovieapp.models.MyComics
-import com.example.marvelmovieapp.models.MyEvents
+import com.example.marvelmovieapp.models.HomeItem
 import com.example.marvelmovieapp.models.SliderModel
 import com.example.marvelmovieapp.network.retrofit.Retrofit
 
@@ -12,11 +10,36 @@ class HomeViewModel : BaseViewModel() {
 
     private var service = Retrofit.getMovieService()
     val imageSlider: MutableLiveData<List<SliderModel>> = MutableLiveData(emptyList())
-    val events: MutableLiveData<List<MyEvents>> = MutableLiveData(emptyList())
+    val events: MutableLiveData<List<HomeItem>> = MutableLiveData(emptyList())
+    val characters: MutableLiveData<List<HomeItem>> = MutableLiveData(emptyList())
+    val creators: MutableLiveData<List<HomeItem>> = MutableLiveData(emptyList())
+    val comics: MutableLiveData<List<HomeItem>> = MutableLiveData(emptyList())
 
     init {
-        getComics()
+        getSeries()
         getEvents()
+        getCharacters()
+        getCreators()
+        getComics()
+    }
+
+    private fun getSeries() {
+        sendRequest(call = {
+            service.getSeries()
+        }, result = { result ->
+
+            val safeResult = result.data.results
+            safeResult.let { it ->
+                val items = it.map {
+                    SliderModel(
+                        id = it.id,
+                        imageUrl = it.thumbnail.path + "/" + "detail" + "." + it.thumbnail.extension,
+                        imageTitle = it.title,
+                    )
+                }
+                imageSlider.value = items
+            }
+        })
     }
 
     private fun getComics() {
@@ -26,39 +49,78 @@ class HomeViewModel : BaseViewModel() {
 
             val safeResult = result.data.results
             safeResult.let { it ->
-                it.forEach {
-                    val item = SliderModel(
+                val items = it.map {
+                    HomeItem(
                         id = it.id,
-                        imageUrl = it.thumbnail.path + "/" + "detail" + "." + it.thumbnail.extension,
+                        imageUrl = it.thumbnail.path + "/" + "portrait_medium" + "." + it.thumbnail.extension,
                         imageTitle = it.title,
+                        description = "it.description"
                     )
-                    imageSlider.value = listOf(item)
                 }
+                comics.value = items
             }
-            //comicResponse.value = safeResult
-            Log.d("TAG", "getComics: $safeResult")
         })
     }
 
-    private fun getEvents(){
+    private fun getEvents() {
         sendRequest(call = {
             service.getEvents()
         }, result = { result ->
 
             val safeResult = result.data.results
             safeResult.let { it ->
-                it.forEach {
-                    val item = MyEvents(
+                val items = it.map {
+                    HomeItem(
                         id = it.id,
                         imageUrl = it.thumbnail.path + "/" + "portrait_medium" + "." + it.thumbnail.extension,
                         imageTitle = it.title,
                         description = it.description
                     )
-                    events.value = listOf(item)
                 }
+                events.value = items
             }
 
         })
 
+    }
+
+    private fun getCharacters() {
+        sendRequest(call = {
+            service.getCharacters()
+        }, result = { result ->
+
+            val safeResult = result.data.results
+            safeResult.let { it ->
+                val items = it.map {
+                    HomeItem(
+                        id = it.id,
+                        imageUrl = it.thumbnail.path + "/" + "portrait_medium" + "." + it.thumbnail.extension,
+                        imageTitle = it.name,
+                        description = it.description
+                    )
+                }
+                characters.value = items
+            }
+        })
+    }
+
+    private fun getCreators() {
+        sendRequest(call = {
+            service.getCreators()
+        }, result = { result ->
+
+            val safeResult = result.data.results
+            safeResult.let { it ->
+                val items = it.map {
+                    HomeItem(
+                        id = it.id,
+                        imageUrl = it.thumbnail.path + "/" + "portrait_medium" + "." + it.thumbnail.extension,
+                        imageTitle = it.firstName,
+                        description = it.fullName
+                    )
+                }
+                creators.value = items
+            }
+        })
     }
 }

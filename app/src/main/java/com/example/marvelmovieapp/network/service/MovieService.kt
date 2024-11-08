@@ -1,7 +1,9 @@
 package com.example.marvelmovieapp.network.service
 
 import com.example.marvelmovieapp.BuildConfig
+import com.example.marvelmovieapp.network.model.CharactersResponse
 import com.example.marvelmovieapp.network.model.ComicResponse
+import com.example.marvelmovieapp.network.model.CreatorsResponse
 import com.example.marvelmovieapp.network.model.EventsResponse
 import com.example.marvelmovieapp.network.model.MarvelResponse
 import com.example.marvelmovieapp.network.model.SeriesResponse
@@ -18,6 +20,11 @@ interface MovieService {
     @GET("events?$HEADER_VALUES")
     fun getEvents(): Call<MarvelResponse<EventsResponse>>
 
+    @GET("characters?$HEADER_VALUES")
+    fun getCharacters(): Call<MarvelResponse<CharactersResponse>>
+
+    @GET("creators?$HEADER_VALUES")
+    fun getCreators(): Call<MarvelResponse<CreatorsResponse>>
 
     companion object {
         private const val HEADER_VALUES =

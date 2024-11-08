@@ -1,9 +1,8 @@
 package com.example.marvelmovieapp.models
 
-
-data class MyComics(
+data class HomeItem(
     val id: Int,
-    val title: String,
+    val imageUrl: String,
+    val imageTitle: String,
     val description: String,
-    val image: String,
 )

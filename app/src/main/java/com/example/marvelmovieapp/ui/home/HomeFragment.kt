@@ -1,41 +1,37 @@
 package com.example.marvelmovieapp.ui.home
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.MutableLiveData
 import androidx.navigation.findNavController
 import androidx.viewpager2.widget.ViewPager2
-import com.example.marvelmovieapp.adapter.EventsRecyclerViewAdapter
+import com.example.marvelmovieapp.adapter.HomeItemAdapter
 import com.example.marvelmovieapp.adapter.ImageViewPagerAdapter
 import com.example.marvelmovieapp.databinding.FragmentHomeBinding
-import com.example.marvelmovieapp.models.MyEvents
-import com.example.marvelmovieapp.models.SliderModel
+import com.example.marvelmovieapp.models.HomeItem
 
 class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
 
-
     private val viewModel by viewModels<HomeViewModel>()
 
-    //private val imageUrlList: ArrayList<String> = ArrayList()
-    private val imageSlider: ArrayList<SliderModel> = ArrayList()
-    private val eventImage: ArrayList<MyEvents> = ArrayList()
-
     private lateinit var imageViewPagerAdapter: ImageViewPagerAdapter
-    private var eventsRecyclerViewAdapter = EventsRecyclerViewAdapter()
+
+    private val eventsRecyclerViewAdapter = HomeItemAdapter()
+    private val charactersRecyclerViewAdapter = HomeItemAdapter()
+    private val creatorsRecyclerViewAdapter = HomeItemAdapter()
+    private val comicsRecyclerViewAdapter = HomeItemAdapter()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
-
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val view = binding.root
 
@@ -45,39 +41,49 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        eventsRecyclerViewAdapter.onItemClicked = {
-            val action = HomeFragmentDirections.actionHomeFragmentToHomeDetail(
-                title = eventImage[it].imageTitle,
-                imageUrl = eventImage[it].imageUrl,
-                description = eventImage[it].description
-            )
-            view.findNavController().navigate(action)
-            Log.d("Home", "on clicked.")
-        }
+        setupRecyclerViewAdapters()
 
-        binding.eventsRecyclerView.adapter = eventsRecyclerViewAdapter
+        observeAndHandleSeriesResponse()
 
-        observeAndHandleComicResponse()
-        observeAndHandleEventsResponse()
+        observeAndHandleResponse(viewModel.events, eventsRecyclerViewAdapter)
+        observeAndHandleResponse(viewModel.characters, charactersRecyclerViewAdapter)
+        observeAndHandleResponse(viewModel.creators, creatorsRecyclerViewAdapter)
+        observeAndHandleResponse(viewModel.comics, comicsRecyclerViewAdapter)
     }
 
-    private fun observeAndHandleComicResponse() {
-        viewModel.imageSlider.observe(viewLifecycleOwner) { comic ->
-            if (comic.isEmpty()) return@observe
-            imageSlider.addAll(comic)
+    private fun observeAndHandleSeriesResponse() {
+        viewModel.imageSlider.observe(viewLifecycleOwner) { series ->
+            if (series.isEmpty()) return@observe
             //initializing the adapter
-            imageViewPagerAdapter = ImageViewPagerAdapter(imageSlider)
+            imageViewPagerAdapter = ImageViewPagerAdapter(series)
             setUpViewPager()
         }
     }
 
-    private fun observeAndHandleEventsResponse() {
-        viewModel.events.observe(viewLifecycleOwner) { events ->
-            if (events.isEmpty()) return@observe
-            eventImage.addAll(events)
-            eventsRecyclerViewAdapter.setItems(eventImage)
+    private fun observeAndHandleResponse(
+        liveData: MutableLiveData<List<HomeItem>>,
+        adapter: HomeItemAdapter
+    ) {
+        liveData.observe(viewLifecycleOwner) { items ->
+            if (items.isEmpty()) return@observe
+            adapter.setItems(items)
         }
 
+        adapter.onItemClicked = { item ->
+            val action = HomeFragmentDirections.actionHomeFragmentToHomeDetail(
+                title = item.imageTitle,
+                imageUrl = item.imageUrl,
+                description = item.description
+            )
+            view?.findNavController()?.navigate(action)
+        }
+    }
+
+    private fun setupRecyclerViewAdapters() {
+        binding.eventsRecyclerView.adapter = eventsRecyclerViewAdapter
+        binding.charactersRecyclerView.adapter = charactersRecyclerViewAdapter
+        binding.creatorsRecyclerView.adapter = creatorsRecyclerViewAdapter
+        binding.comicsRecyclerView.adapter = comicsRecyclerViewAdapter
     }
 
     private fun setUpViewPager() {
@@ -99,12 +105,12 @@ class HomeFragment : Fragment() {
                     super.onPageSelected(position)
 
                     //update the image number textview
-                    binding.imageNumber.text = "${position + 1} / ${imageSlider.size}"
+                    binding.imageNumber.text =
+                        "${position + 1} / ${viewModel.imageSlider.value?.size}"
                 }
             }
         )
     }
-
 
     override fun onDestroy() {
         super.onDestroy()

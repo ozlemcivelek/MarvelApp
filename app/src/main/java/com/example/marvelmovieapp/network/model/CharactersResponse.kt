@@ -1,8 +1,8 @@
 package com.example.marvelmovieapp.network.model
 
-data class ComicResponse(
+data class CharactersResponse(
     val id: Int,
-    val title: String,
+    val name: String,
     val description: String,
-    val thumbnail:Thumbnail,
+    val thumbnail: Thumbnail,
 )
