@@ -6,6 +6,7 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "saved_items")
 data class SavedItem(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
+    val itemId: Int,
     val title: String,
     val description: String,
     val imageUrl: String

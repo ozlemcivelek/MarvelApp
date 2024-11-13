@@ -15,6 +15,10 @@ class ItemRepositoryImpl(private val savedItemDao: SavedItemDao) : ItemRepositor
     }
 
     override suspend fun deleteItem(id: Int) {
-        // Öğe silme işlemi burada gerçekleştirilecek
+        savedItemDao.deleteItemById(id)
+    }
+
+    override suspend fun isItemExist(id: Int): Boolean {
+       return savedItemDao.isItemExist(id)
     }
 }

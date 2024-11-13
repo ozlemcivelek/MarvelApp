@@ -18,4 +18,10 @@ interface SavedItemDao {
 
     @Delete
     suspend fun deleteItem(item: SavedItem)
+
+    @Query("DELETE FROM saved_items WHERE itemId = :id")
+    suspend fun deleteItemById(id: Int)
+
+    @Query("SELECT EXISTS(SELECT 1 FROM saved_items WHERE itemId = :id)")
+    suspend fun isItemExist(id: Int): Boolean
 }

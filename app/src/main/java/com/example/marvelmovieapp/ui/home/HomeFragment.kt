@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.MutableLiveData
-import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
 import com.example.marvelmovieapp.adapter.HomeItemAdapter
 import com.example.marvelmovieapp.adapter.ImageViewPagerAdapter
@@ -70,12 +70,8 @@ class HomeFragment : Fragment() {
         }
 
         adapter.onItemClicked = { item ->
-            val action = HomeFragmentDirections.actionHomeFragmentToHomeDetail(
-                title = item.imageTitle,
-                imageUrl = item.imageUrl,
-                description = item.description
-            )
-            view?.findNavController()?.navigate(action)
+            val action = HomeFragmentDirections.actionHomeFragmentToHomeDetail(item)
+            findNavController().navigate(action)
         }
     }
 

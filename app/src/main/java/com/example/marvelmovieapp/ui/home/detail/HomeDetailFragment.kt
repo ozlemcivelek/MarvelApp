@@ -7,7 +7,7 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -29,6 +29,9 @@ class HomeDetailFragment : Fragment() {
 
     private val args by navArgs<HomeDetailFragmentArgs>()
 
+    private lateinit var item: SavedItem
+    var isExist = false
+
     private val viewModel: MainViewModel by activityViewModels()
     private val detailViewModel: HomeDetailViewModel by viewModels()
 
@@ -43,18 +46,18 @@ class HomeDetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        // Kaydedilen öğeleri gözlemleyin
-        /*savedItemViewModel.allItems.observe(viewLifecycleOwner, Observer { items ->
-            // Buraya kaydedilen öğeleri kullanarak istediğiniz işlemleri yapabilirsiniz
-        })*/
-
+        item = SavedItem(
+            itemId = args.item.id,
+            title = args.item.imageTitle,
+            description = args.item.description,
+            imageUrl = args.item.imageUrl
+        )
         actionBarMenuProvider()
 
-        viewModel.setTitle(args.title)
-        binding.descriptionTextView.text = args.description
+        viewModel.setTitle(item.title)
+        binding.descriptionTextView.text = item.description
         Picasso.get()
-            .load(args.imageUrl)
+            .load(item.imageUrl)
             .error(R.drawable.baseline_error_24)
             .into(binding.detailImageView)
     }
@@ -63,40 +66,50 @@ class HomeDetailFragment : Fragment() {
         requireActivity().addMenuProvider(object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
                 menuInflater.inflate(R.menu.action_bar_menu, menu)
+
+                val favItem = menu.findItem(R.id.action_fav)
+                setInitialFavIconColor(favItem)
             }
 
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                 return when (menuItem.itemId) {
                     R.id.action_fav -> {
-                        // Detay sayfasında fav ikonuna tıklanınca:
-                        saveItem(
-                            args.title,
-                            args.description,
-                            args.imageUrl
-                        )
-                        Toast.makeText(requireContext(), "Favoriye Eklendi", Toast.LENGTH_SHORT)
-                            .show()
-
-                        //findNavController().navigate(R.id.action_homeDetail_to_myLibraryFragment)
-
+                        if (isExist) {
+                            deleteItem(item.itemId)
+                        } else {
+                            saveItem(item)
+                        }
+                        updateFavIconColor(menuItem, !isExist)
                         true
                     }
 
-                    else -> {
-                        Toast.makeText(requireContext(), "Favoriye eklenemedi", Toast.LENGTH_SHORT)
-                            .show()
-
-                        false
-                    }
+                    else -> false
                 }
             }
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)
     }
 
-    private fun saveItem(title: String, description: String, imageUrl: String) {
-        //Create Item Object
-        val item = SavedItem(title = title, description = description, imageUrl = imageUrl)
-        //Add Data to Database
+    private fun setInitialFavIconColor(menuItem: MenuItem) {
+        detailViewModel.checkIfItemExists(item.itemId) { isExist ->
+            updateFavIconColor(menuItem, isExist)
+        }
+    }
+
+    private fun updateFavIconColor(menuItem: MenuItem, isFav: Boolean) {
+        this.isExist = isFav
+        val color = if (isFav) {
+            android.R.color.holo_red_dark // Favoriye eklenmişse kırmızı renk
+        } else {
+            android.R.color.white // Favoriye eklenmemişse beyaz renk
+        }
+        menuItem.icon?.setTint(ContextCompat.getColor(requireContext(), color))
+    }
+
+    private fun saveItem(item: SavedItem) {
         detailViewModel.insertItem(item)
+    }
+
+    private fun deleteItem(id: Int) {
+        detailViewModel.deleteItem(id)
     }
 }

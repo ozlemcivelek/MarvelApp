@@ -29,15 +29,10 @@
         android:name="com.example.marvelmovieapp.ui.home.detail.HomeDetailFragment"
         android:label="fragment_home_detail"
         tools:layout="@layout/fragment_home_detail">
+
         <argument
-            android:name="title"
-            app:argType="string" />
-        <argument
-            android:name="imageUrl"
-            app:argType="string" />
-        <argument
-            android:name="description"
-            app:argType="string" />
+            android:name="item"
+            app:argType="com.example.marvelmovieapp.models.HomeItem" />
         <action
             android:id="@+id/action_homeDetail_to_myLibraryFragment"
             app:destination="@id/myLibraryFragment" />
