@@ -13,8 +13,8 @@ interface SavedItemDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertItem(item: SavedItem)
 
-    @Query("SELECT * FROM saved_items") // ORDER BY id ASC
-    fun getAllItems(): LiveData<List<SavedItem>> // LiveData ile library sayfasında dinamik gösterim
+    @Query("SELECT * FROM saved_items WHERE type = :itemType")
+    suspend fun getAllItems(itemType: String): List<SavedItem>
 
     @Delete
     suspend fun deleteItem(item: SavedItem)

@@ -6,8 +6,8 @@ import com.example.marvelmovieapp.database.model.SavedItem
 
 class ItemRepositoryImpl(private val savedItemDao: SavedItemDao) : ItemRepository {
 
-    override suspend fun getAllItems(): LiveData<List<SavedItem>> {
-        return savedItemDao.getAllItems()
+    override suspend fun getAllItems(type : String): List<SavedItem> {
+        return savedItemDao.getAllItems(type)
     }
 
     override suspend fun insertItem(item: SavedItem) {
