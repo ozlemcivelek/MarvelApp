@@ -52,6 +52,7 @@ class HomeViewModel : BaseViewModel() {
                 val items = it.map {
                     HomeItem(
                         id = it.id,
+                        type = "COMICS",
                         imageUrl = it.thumbnail.path + "/" + "portrait_medium" + "." + it.thumbnail.extension,
                         imageTitle = it.title,
                         description = "it.description"
@@ -72,6 +73,7 @@ class HomeViewModel : BaseViewModel() {
                 val items = it.map {
                     HomeItem(
                         id = it.id,
+                        type = "EVENTS",
                         imageUrl = it.thumbnail.path + "/" + "portrait_medium" + "." + it.thumbnail.extension,
                         imageTitle = it.title,
                         description = it.description
@@ -94,9 +96,11 @@ class HomeViewModel : BaseViewModel() {
                 val items = it.map {
                     HomeItem(
                         id = it.id,
+                        type = "CHARACTERS",
                         imageUrl = it.thumbnail.path + "/" + "portrait_medium" + "." + it.thumbnail.extension,
                         imageTitle = it.name,
                         description = it.description
+
                     )
                 }
                 characters.value = items
@@ -114,6 +118,7 @@ class HomeViewModel : BaseViewModel() {
                 val items = it.map {
                     HomeItem(
                         id = it.id,
+                        type = "CREATORS",
                         imageUrl = it.thumbnail.path + "/" + "portrait_medium" + "." + it.thumbnail.extension,
                         imageTitle = it.firstName,
                         description = it.fullName

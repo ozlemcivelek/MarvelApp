@@ -48,6 +48,7 @@ class HomeDetailFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         item = SavedItem(
             itemId = args.item.id,
+            type = args.item.type,
             title = args.item.imageTitle,
             description = args.item.description,
             imageUrl = args.item.imageUrl
