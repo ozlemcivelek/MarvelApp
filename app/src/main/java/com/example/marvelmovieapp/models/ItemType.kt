@@ -4,5 +4,6 @@ enum class ItemType {
     EVENTS,
     COMICS,
     CREATORS,
-    CHARACTERS
+    CHARACTERS,
+    SERIES,
 }

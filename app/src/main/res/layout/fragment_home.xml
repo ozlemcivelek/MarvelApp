@@ -17,6 +17,20 @@
         android:layout_height="0dp"
         tools:context=".ui.home.HomeFragment">
 
+
+        <ProgressBar
+            android:id="@+id/progressBarSlider"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            app:layout_constraintBottom_toBottomOf="@+id/viewPager"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+        </ProgressBar>
+
+
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/viewPager"
             android:layout_width="match_parent"
@@ -24,6 +38,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>
+
 
         <TextView
             android:id="@+id/imageNumber"
@@ -38,7 +53,7 @@
             tools:text="01/30" />
 
         <LinearLayout
-            android:id="@+id/eventLayout"
+            android:id="@+id/Layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
@@ -52,39 +67,57 @@
                 android:id="@+id/eventTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="EVENTS"
+                android:text="@string/events"
                 android:padding="5dp"
                 android:textAlignment="center"
-                android:textSize="24dp"
+                android:textSize="24sp"
                 android:textColor="#262432"
                 android:textStyle="bold" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/eventsRecyclerView"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
+                tools:itemCount="3"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:listitem="@layout/recycler_row" />
+
+            <!-- ProgressBar -->
+            <ProgressBar
+                android:id="@+id/progressBarEvent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/charactersTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="CHARACTERS"
+                android:text="@string/characters"
                 android:padding="5dp"
                 android:textAlignment="center"
-                android:textSize="24dp"
+                android:textSize="24sp"
                 android:textColor="#262432"
                 android:textStyle="bold" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/charactersRecyclerView"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                tools:itemCount="3"
                 android:orientation="horizontal"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:listitem="@layout/recycler_row" />
+
+            <!-- ProgressBar -->
+            <ProgressBar
+                android:id="@+id/progressBarCharacters"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/creatorsTitle"
@@ -99,30 +132,49 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/creatorsRecyclerView"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
+                tools:itemCount="3"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:listitem="@layout/recycler_row" />
+
+            <!-- ProgressBar -->
+            <ProgressBar
+                android:id="@+id/progressBarCreators"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/comicsTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="COMICS"
+                android:text="@string/comics"
                 android:padding="5dp"
                 android:textAlignment="center"
-                android:textSize="24dp"
+                android:textSize="24sp"
                 android:textColor="#262432"
                 android:textStyle="bold" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/comicsRecyclerView"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
+                tools:itemCount="3"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:listitem="@layout/recycler_row" />
+
+            <!-- ProgressBar -->
+            <ProgressBar
+                android:id="@+id/progressBarComics"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:visibility="gone" />
+
 
         </LinearLayout>
 
