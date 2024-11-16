@@ -13,17 +13,33 @@
         <action
             android:id="@+id/action_homeFragment_to_homeDetail"
             app:destination="@id/homeDetail" />
+        <action
+            android:id="@+id/action_homeFragment_to_browseFragment"
+            app:destination="@id/browseFragment" />
     </fragment>
     <fragment
         android:id="@+id/myLibraryFragment"
         android:name="com.example.marvelmovieapp.ui.library.MyLibraryFragment"
         android:label="@string/my_library"
-        tools:layout="@layout/fragment_my_library" />
+        tools:layout="@layout/fragment_my_library">
+        <action
+            android:id="@+id/action_myLibraryFragment_to_homeDetail"
+            app:destination="@id/homeDetail" />
+    </fragment>
     <fragment
         android:id="@+id/browseFragment"
         android:name="com.example.marvelmovieapp.ui.browse.BrowseFragment"
         android:label="@string/browse"
-        tools:layout="@layout/fragment_browse" />
+        tools:layout="@layout/fragment_browse">
+        <action
+            android:id="@+id/action_browseFragment_to_homeDetail"
+            app:destination="@id/homeDetail" />
+        <argument
+            android:name="itemType"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
+    </fragment>
     <fragment
         android:id="@+id/homeDetail"
         android:name="com.example.marvelmovieapp.ui.home.detail.HomeDetailFragment"
@@ -33,8 +49,5 @@
         <argument
             android:name="item"
             app:argType="com.example.marvelmovieapp.models.HomeItem" />
-        <action
-            android:id="@+id/action_homeDetail_to_myLibraryFragment"
-            app:destination="@id/myLibraryFragment" />
     </fragment>
 </navigation>

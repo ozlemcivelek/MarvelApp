@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.MutableLiveData
@@ -13,6 +14,8 @@ import com.example.marvelmovieapp.adapter.HomeItemAdapter
 import com.example.marvelmovieapp.adapter.ImageViewPagerAdapter
 import com.example.marvelmovieapp.databinding.FragmentHomeBinding
 import com.example.marvelmovieapp.models.HomeItem
+import com.example.marvelmovieapp.models.ItemType
+import com.example.marvelmovieapp.models.LoadingState
 
 class HomeFragment : Fragment() {
 
@@ -21,7 +24,7 @@ class HomeFragment : Fragment() {
 
     private val viewModel by viewModels<HomeViewModel>()
 
-    private lateinit var imageViewPagerAdapter: ImageViewPagerAdapter
+    private val imageViewPagerAdapter = ImageViewPagerAdapter()
 
     private val eventsRecyclerViewAdapter = HomeItemAdapter()
     private val charactersRecyclerViewAdapter = HomeItemAdapter()
@@ -41,8 +44,13 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setupRecyclerViewAdapters()
+        observeLoadingResponse(viewModel.sliderLoadingState, binding.progressBarSlider)
+        observeLoadingResponse(viewModel.eventLoadingState, binding.progressBarEvent)
+        observeLoadingResponse(viewModel.characterLoadingState, binding.progressBarCharacters)
+        observeLoadingResponse(viewModel.creatorLoadingState, binding.progressBarCreators)
+        observeLoadingResponse(viewModel.comicLoadingState, binding.progressBarComics)
 
+        setupRecyclerViewAdapters()
         observeAndHandleSeriesResponse()
 
         observeAndHandleResponse(viewModel.events, eventsRecyclerViewAdapter)
@@ -52,12 +60,24 @@ class HomeFragment : Fragment() {
     }
 
     private fun observeAndHandleSeriesResponse() {
+        imageViewPagerAdapter.onItemClicked = { sliderModel ->
+            actionDetailFragment(
+                HomeItem(
+                    id = sliderModel.id,
+                    type = ItemType.SERIES.toString(),
+                    imageUrl = sliderModel.imageUrl,
+                    imageTitle = sliderModel.imageTitle,
+                    description = ""
+                )
+            )
+        }
         viewModel.imageSlider.observe(viewLifecycleOwner) { series ->
             if (series.isEmpty()) return@observe
             //initializing the adapter
-            imageViewPagerAdapter = ImageViewPagerAdapter(series)
+            imageViewPagerAdapter.setItems(series)
             setUpViewPager()
         }
+
     }
 
     private fun observeAndHandleResponse(
@@ -66,12 +86,41 @@ class HomeFragment : Fragment() {
     ) {
         liveData.observe(viewLifecycleOwner) { items ->
             if (items.isEmpty()) return@observe
-            adapter.setItems(items)
+
+            val limitedItems = if (items.size > 3) items.take(3) else items
+            adapter.setItems(limitedItems)
         }
 
         adapter.onItemClicked = { item ->
-            val action = HomeFragmentDirections.actionHomeFragmentToHomeDetail(item)
+            actionDetailFragment(item)
+        }
+
+        adapter.onBrowseAllClicked = { itemType->
+            val action = HomeFragmentDirections.actionHomeFragmentToBrowseFragment(itemType) // ItemType gelecek.
             findNavController().navigate(action)
+        }
+    }
+
+    private fun actionDetailFragment(item: HomeItem) {
+        val action = HomeFragmentDirections.actionHomeFragmentToHomeDetail(item)
+        findNavController().navigate(action)
+    }
+
+    private fun observeLoadingResponse(
+        liveData: MutableLiveData<LoadingState>,
+        progressBar: ProgressBar) {
+        liveData.observe(viewLifecycleOwner) { state ->
+            when (state) {
+                LoadingState.LOADING -> {
+                    progressBar.visibility = View.VISIBLE
+                }
+
+                LoadingState.SUCCESS -> {
+                    progressBar.visibility = View.GONE
+                }
+
+                else -> Unit
+            }
         }
     }
 
@@ -93,6 +142,11 @@ class HomeFragment : Fragment() {
         val currentPageIndex = 1
         binding.viewPager.currentItem = currentPageIndex
 
+        val currentPage = 1
+        val totalPages = viewModel.imageSlider.value?.size ?: 0
+        val initialPageInfo = "$currentPage/$totalPages"
+        binding.imageNumber.text = initialPageInfo
+
         // registering for page change callback
         binding.viewPager.registerOnPageChangeCallback(
             object : ViewPager2.OnPageChangeCallback() {
@@ -100,9 +154,8 @@ class HomeFragment : Fragment() {
                 override fun onPageSelected(position: Int) {
                     super.onPageSelected(position)
 
-                    //update the image number textview
-                    binding.imageNumber.text =
-                        "${position + 1} / ${viewModel.imageSlider.value?.size}"
+                    val currentPageInfo = "${(position)}/$totalPages"
+                    binding.imageNumber.text = currentPageInfo
                 }
             }
         )

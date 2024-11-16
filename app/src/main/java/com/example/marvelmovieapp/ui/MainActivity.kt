@@ -48,7 +48,8 @@ class MainActivity : AppCompatActivity() {
                 R.id.homeFragment,
                 R.id.browseFragment,
                 R.id.myLibraryFragment
-            )
+            ),
+            fallbackOnNavigateUpListener = ::onSupportNavigateUp
         )
 
         NavigationUI.setupActionBarWithNavController(

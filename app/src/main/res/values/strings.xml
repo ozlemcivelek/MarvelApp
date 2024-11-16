@@ -7,5 +7,13 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="browse">Browse</string>
     <string name="my_library">My Library</string>
+    <string name="all">ALL</string>
+    <string name="events">EVENTS</string>
+    <string name="comics">COMICS</string>
+    <string name="creators">CREATORS</string>
+    <string name="characters">CHARACTERS</string>
+    <string name="series">SERIES</string>
+    <string name="stories">STORIES</string>
+    <string name="browse_all">Browse All</string>
 
 </resources>

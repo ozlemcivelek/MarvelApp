@@ -4,4 +4,6 @@
     <color name="white">#FFFFFFFF</color>
     <color name="white60">#99FFFFFF</color>
     <color name="transparent">#00000000</color>
+    <color name="themeColor">#262432</color>
+    <color name="selectedTabColor">#BF0000</color>
 </resources>
