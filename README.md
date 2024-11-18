@@ -1,6 +1,9 @@
 # Marvel Uygulaması
 
-http://developer.marvel.com/ adresindeki API' yi kullanarak oluşturulan Marvel uygulaması.
+http://developer.marvel.com/ adresindeki API' yi kullanarak oluşturulan Marvel uygulaması. <br/>
+Uygulama Marvel API'sinden alınan "comics", "events", "characters", "creators" ve "series" leri listeler halinde "Home" da göstermektedir.
+Kullanıcı "Browse All" a tıklayarak seçtiği kategorinin tümünü listeyebilir. Ayrıntılı incelemek istediği filmi, dergiyi vs. seçerek favori listesini oluşturabilir. "My Library" sekmesinde seçtiği filmleri, dergileri görüntüleyebilir.
+"Browse" kısmında Marvel da yer tüm kategorileri görebilir.
 
 ## Mimari
 
@@ -11,10 +14,21 @@ MVVM, kodu modüler bir şekilde düzenlemeye olanak tanır. Model, View ve View
 **View:** Aktiviteler, fragmentler aracılığı ile görsel bileşenleri içerir.<br/>
 **ViewModel:** Model ve View arasında bir bağlantı sağlar. Kullanıcı arayüzüyle ilgili işlemleri içerir ve View'i doğrudan etkilemeden, Model'den gelen verilere erişim sağlar.<br/>
 
-Aşağıdaki diyagram tüm modülleri ve her modülün daha sonra birbirleriyle nasıl etkileşime girdiğini göstermektedir.
+## Kullanılan Teknolojiler
 
+- Kotlin
+- MVVM
+- Hilt
+- Coroutines
+- Retrofit
+- LiveData
+- Room
+- Picasso
+- Navigation Components
+- ViewPager2
+- Frgment
 
-## Projede kullanılan teknolojiler
+## Ekran Görüntüleri
 
-## Ekran görüntüleri
-<img src="screenshots/marvel-app-1.JPG" alt="görsel 1"/>
+<img src="screenshots/marvel-app-1.png" alt="görsel 1" width="360" height="720"/> <img src="screenshots/marvel-app-2.png" alt="görsel 2" width="360" height="720"/> <img src="screenshots/marvel-app-3.png" alt="görsel 3" width="360" height="720"/> 
+<img src="screenshots/marvel-app-4.png" alt="görsel 4" width="360" height="720"/><img src="screenshots/marvel-app-5.png" alt="görsel 5" width="360" height="720"/>
